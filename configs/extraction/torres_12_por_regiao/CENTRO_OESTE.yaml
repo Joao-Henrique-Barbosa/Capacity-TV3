@@ -1,0 +1,25 @@
+# Grade completa; executar os lotes em sequência.
+paths: ../../paths.local.yaml
+tower_catalog: ../../towers_12_por_regiao.yaml
+towers:
+- GO_57dbaaf999935
+- GO_57dbaad27b93d
+- GO_57dbac1a2eb1f
+- GO_57dbac1abc02a
+- GO_57dbab864988d
+- MS_57dbab8b1b076
+- MS_57dbac284d57c
+- MT_57dbac289373d
+- MT_57dbac2988714
+- MT_57dbab24db539
+- MT_57dbac29c0a2e
+- MT_57dbab2084412
+frequencies_ghz:
+- 0.195
+- 0.234
+- 0.273
+- 0.354
+- 0.6
+suriacov_config: ../suriacov.yaml
+reuse_existing: true
+selection_output: datasets/CENTRO_OESTE.yaml

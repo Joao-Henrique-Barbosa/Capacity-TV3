@@ -1,0 +1,63 @@
+# Execute primeiro configs/extraction/torres_12_por_regiao/NORDESTE.yaml.
+# A selecao datasets abaixo e publicada pela extracao desse lote.
+# random_seed: null sorteia e registra a semente; max_workers: null usa o limite automatico.
+# nmse_values representa epsilon; NMSE = epsilon^2.
+campaign: torres_12_por_regiao_nordeste
+paths: ../../../paths.local.yaml
+tower_catalog: ../../../towers_12_por_regiao.yaml
+datasets: ../../../extraction/torres_12_por_regiao/datasets/NORDESTE.yaml
+towers:
+- BA_57dbac10a8194
+- BA_57dbaae7888b4
+- BA_57dbaae43ca1f
+- BA_57dbaae5de114
+- CE_57dbaaf05ea41
+- MA_57dbab007d719
+- MA_57dbab01bba80
+- MA_57dbab0426325
+- MA_57dbac1b6beed
+- PE_57dbac2f175aa
+- PI_57dbac3166872
+- PI_57dbab8cbf8e0
+random_seed: null
+max_workers: null
+write_plots: true
+channel:
+  mu_chi_bar_db: 14.7
+  sigma_chi_bar_db: 2.6
+  mu_chi_tilde_db: 2.7
+  sigma_chi_tilde_db: 1.2
+  delta_tx: 0.5
+  delta_rx: 0.5
+  bandwidth_hz: 6000000.0
+  det_epsilon: 1.0e-12
+model: mimo_ldm_capacity
+# GHz; devem existir mapas preparados para cada torre e frequencia.
+frequencies_ghz:
+- 0.195
+- 0.234
+- 0.273
+- 0.354
+- 0.6
+# Potencias dos cenarios em dBm, independentes da referencia da extracao.
+p_tx_variations_dbm:
+- 40
+- 50
+- 60
+- 70
+- 80
+injection_ratio_db_values:
+- 0
+- 3
+- 5
+- 10
+nmse_values:
+- 0
+- 0.05
+- 0.1
+# Realizacoes de canal por ponto e cenario.
+num_realizations: 50
+num_error_realizations: 50
+chunk_size: 128
+show_progress: false
+rng_mode: legacy

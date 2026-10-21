@@ -1,0 +1,50 @@
+# Execute primeiro configs/extraction/torres_12_por_regiao/NORTE.yaml.
+# A selecao datasets abaixo e publicada pela extracao desse lote.
+# random_seed: null sorteia e registra a semente; max_workers: null usa o limite automatico.
+campaign: torres_12_por_regiao_norte
+paths: ../../../paths.local.yaml
+tower_catalog: ../../../towers_12_por_regiao.yaml
+datasets: ../../../extraction/torres_12_por_regiao/datasets/NORTE.yaml
+towers:
+- AM_57dbac0ec1a75
+- AM_57dbaae08af98
+- AM_57dbaae00239c
+- PA_57dbab29e9626
+- PA_57dbab276b156
+- PA_57dbab2a7df18
+- PA_57dbac2c28e23
+- PA_57dbab28880e5
+- RO_57dbac3a6f7ba
+- TO_57dbac4f29124
+- TO_57dbac4ea9609
+- TO_57dbab7ac04e4
+random_seed: null
+max_workers: null
+write_plots: true
+channel:
+  mu_chi_bar_db: 14.7
+  sigma_chi_bar_db: 2.6
+  mu_chi_tilde_db: 2.7
+  sigma_chi_tilde_db: 1.2
+  delta_tx: 0.5
+  delta_rx: 0.5
+model: mimo_capacity
+# GHz; devem existir mapas preparados para cada torre e frequencia.
+frequencies_ghz:
+- 0.195
+- 0.234
+- 0.273
+- 0.354
+- 0.6
+# Potencias dos cenarios em dBm, independentes da referencia da extracao.
+p_tx_variations_dbm:
+- 50
+- 55
+- 60
+- 65
+- 70
+- 75
+- 80
+- 85
+# Realizacoes de canal por ponto e cenario.
+num_realizations: 1000

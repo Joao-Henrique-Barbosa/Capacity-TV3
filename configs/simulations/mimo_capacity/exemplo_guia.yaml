@@ -1,0 +1,20 @@
+# Exemplo de funcionamento; 10 realizações não são uma configuração de convergência.
+model: mimo_capacity
+campaign: exemplo_guia
+paths: ../../paths.local.yaml
+tower_catalog: ../../towers_12_por_regiao.yaml
+datasets: ../../extraction/datasets/exemplo_guia.yaml
+towers: [AM_57dbac0ec1a75]
+frequencies_ghz: [0.273]
+p_tx_variations_dbm: [60]
+num_realizations: 10
+random_seed: 2026
+max_workers: 1
+write_plots: true
+channel:
+  mu_chi_bar_db: 14.7
+  sigma_chi_bar_db: 2.6
+  mu_chi_tilde_db: 2.7
+  sigma_chi_tilde_db: 1.2
+  delta_tx: 0.5
+  delta_rx: 0.5

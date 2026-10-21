@@ -1,0 +1,13 @@
+# Caminhos relativos a ESTE arquivo, independentemente do terminal.
+# python scripts/setup_project.py cria paths.local.yaml sem substituir um existente.
+environments_root: ../data/environments
+results_root: ../results
+work_root: ../.cache
+# Somente prepare_environments.py precisa dos quatro caminhos abaixo.
+# O setup descompacta as bases distribuídas em data/geography/extracted/.
+# Para usar outras bases, edite apenas paths.local.yaml.
+geography:
+  radio_zone_grid_shp: ../data/geography/extracted/radio_zone_grid_shp/zone_grid_resol_02g.shp
+  brazil_terr_limits_shp: ../data/geography/extracted/brazil_terr_limits_shp/brazil_poly.shp
+  clutter_ref_tif: ../data/geography/extracted/clutter_ref_tif/MCD12Q1.061_LC_Type1_doy2022001_aid0001.tif
+  brazil_geotiff: ../data/geography/extracted/brazil_geotiff/SRTMGL3_NC.003_SRTMGL3_DEM_doy2000042_aid0001_DWSample3x3.tif

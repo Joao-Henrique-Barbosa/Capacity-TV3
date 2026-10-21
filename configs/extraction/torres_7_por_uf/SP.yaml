@@ -1,0 +1,20 @@
+# Grade completa: mapas determinísticos e imagens em env_imgs/.
+paths: ../../paths.local.yaml
+tower_catalog: ../../towers_7_por_uf.yaml
+towers:
+- SP_57dbac4c53a2e
+- SP_57dbac4515eb9
+- SP_57dbac4c05efc
+- SP_57dbac48d7b21
+- SP_57dbac4b752ce
+- SP_57dbab702d4e0
+- SP_57dbac4beb576
+frequencies_ghz:
+- 0.195
+- 0.234
+- 0.273
+- 0.354
+- 0.6
+suriacov_config: ../suriacov.yaml
+reuse_existing: true
+selection_output: datasets/SP.yaml

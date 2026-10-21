@@ -1,0 +1,73 @@
+{
+  "archive": "geography.zip",
+  "sha256": "c6930d90b16240bf4926d17fd9d9be45c58ce0a60fbe48ea6bfa2863df07f0eb",
+  "files": {
+    "radio_zone_grid_shp/zone_grid_resol_02g.cpg": {
+      "sha256": "3ad3031f5503a4404af825262ee8232cc04d4ea6683d42c5dd0a2f2a27ac9824",
+      "size_bytes": 5
+    },
+    "radio_zone_grid_shp/zone_grid_resol_02g.dbf": {
+      "sha256": "00663f3d1e283a47b41d1f43c6c0a595a5502afd679a19182ded07d121338e23",
+      "size_bytes": 3145242
+    },
+    "radio_zone_grid_shp/zone_grid_resol_02g.prj": {
+      "sha256": "a02a27b1d1982c8516d83398e85a3c8b1aef1713c13ef4d84d7bde17430c07c4",
+      "size_bytes": 145
+    },
+    "radio_zone_grid_shp/zone_grid_resol_02g.shp": {
+      "sha256": "6e0f9356dcda5fabd3c479b2da2e82fb5f1832b0423cf1d59c070469023e0347",
+      "size_bytes": 1240388
+    },
+    "radio_zone_grid_shp/zone_grid_resol_02g.shx": {
+      "sha256": "7b322d549f87a8a232bbab186f35b9e404f76f4739af96c50f55288adb3d484a",
+      "size_bytes": 354468
+    },
+    "brazil_terr_limits_shp/brazil_poly.dbf": {
+      "sha256": "1cad5896eaff59c376c990f6ea3140137bb30795bfc41dc10c8c4d36feba1d77",
+      "size_bytes": 281
+    },
+    "brazil_terr_limits_shp/brazil_poly.prj": {
+      "sha256": "b7fe68a2eb827ea974a1a995a73676e095a366b383a10a66c7498300d1c58153",
+      "size_bytes": 151
+    },
+    "brazil_terr_limits_shp/brazil_poly.shp": {
+      "sha256": "4f54e9f417cd05b8f462bf954c306501115d2d82107fa2f5b014a8bf485db20a",
+      "size_bytes": 7923204
+    },
+    "brazil_terr_limits_shp/brazil_poly.shx": {
+      "sha256": "3015a0fecf9c058326bad794ddf752c8169bd59fa4e379729e2046a2f0e7d6e7",
+      "size_bytes": 108
+    },
+    "clutter_ref_tif/MCD12Q1.061_LC_Type1_doy2022001_aid0001.tif": {
+      "sha256": "5e5a626b6dd7a36a17de556d36570dbe2fc575ada506198f7083c26529cf97c3",
+      "size_bytes": 9783970
+    },
+    "brazil_geotiff/SRTMGL3_NC.003_SRTMGL3_DEM_doy2000042_aid0001_DWSample3x3.tif": {
+      "sha256": "8958c21fe4169a9c827e138ff6eafc833194ef2137e06d45d1a622ff57ce92ef",
+      "size_bytes": 135562824
+    }
+  },
+  "paths": {
+    "radio_zone_grid_shp": "radio_zone_grid_shp/zone_grid_resol_02g.shp",
+    "brazil_terr_limits_shp": "brazil_terr_limits_shp/brazil_poly.shp",
+    "clutter_ref_tif": "clutter_ref_tif/MCD12Q1.061_LC_Type1_doy2022001_aid0001.tif",
+    "brazil_geotiff": "brazil_geotiff/SRTMGL3_NC.003_SRTMGL3_DEM_doy2000042_aid0001_DWSample3x3.tif"
+  },
+  "parts": [
+    {
+      "name": "geography.zip.part01",
+      "sha256": "10e113e9166cf4eb6e56de0525fce6c55e5f8166b3da181d9c64c2079fe7c292",
+      "size_bytes": 50331648
+    },
+    {
+      "name": "geography.zip.part02",
+      "sha256": "917c9a3ea9ddf529221d7c904b3af015f82db599660b4db03c6d0694b369804b",
+      "size_bytes": 50331648
+    },
+    {
+      "name": "geography.zip.part03",
+      "sha256": "f1c5d0b8595ba69e394aa6b8aeb53ab9a048b2e50113134e61a9d6b6f625244d",
+      "size_bytes": 48261609
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+# Primeiro uso: uma estação da seleção atual, em 273 MHz.
+paths: ../paths.local.yaml
+tower_catalog: ../towers_12_por_regiao.yaml
+towers: [AM_57dbac0ec1a75]
+frequencies_ghz: [0.273]
+suriacov_config: suriacov.yaml
+reuse_existing: true
+selection_output: datasets/exemplo_guia.yaml

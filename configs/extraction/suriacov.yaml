@@ -1,0 +1,13 @@
+filePaths: {}
+plot_coverage_maps: false
+defaultValues:
+  defaultTXPower: 1.0
+  defaultPolarization: Horizontal
+  defaultPolarizationID: 1
+  defaultTXHeight: 30
+  defaultMinSize: 0.1
+procConsts:
+  radio_zone_grid_minx: -73.89
+  radio_zone_grid_miny: 5.167
+  radio_zone_grid_resol: 0.2
+  coverage_shadow_margin: 9.0
