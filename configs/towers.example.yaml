@@ -1,0 +1,15 @@
+# Cadastro de demonstracao: uma torre, compartilhada pelos tres exemplos.
+towers:
+  AM_57dbac0ec1a75:
+    proj_name: AM_57dbac0ec1a75
+    id_estacao: 57dbac0ec1a75
+    tx_latitude: -4.0975
+    tx_longitude: -63.1505555555555
+    tx_height_ov_ground: 86.14
+    tx_power_kw: 1.0
+    tx_ant_patt: {}
+    tx_polarization_id: 1
+    rx_height_ov_ground: 10.0
+    field_th: 50.0
+    excedance_perc: 50
+    num_samples: 360

@@ -1059,6 +1059,25 @@ class Coverage:
 
         return height_profile, distance_profile, zone_profile, path_coords, clutter_hprofile, clutter_cprofile, num_points
 
+    def _short_path_coverage(self, rx_coord_ij, ant_gain_db):
+        """Calcule os perfis curtos pela distância do raster, em km."""
+        tx_coord_ij = self.env.coord_to_index(*self.tx.tx_coord)
+        x, y = rx_coord_ij
+        d_km = float(self.distance_map[y, x])
+        # O perfil da BS é zerado em _get_path_profiles. Use a resolução
+        # efetiva do raster nesse pixel, evitando um enlace artificial de 1 m.
+        if tuple(rx_coord_ij) == tuple(tx_coord_ij) or d_km <= 0:
+            positive = self.distance_map[np.isfinite(self.distance_map) & (self.distance_map > 0)]
+            if not positive.size:
+                raise ValueError('O mapa precisa conter distancias positivas.')
+            d_km = float(positive.min())
+        if not math.isfinite(d_km):
+            raise ValueError('Distancia nao finita no perfil curto.')
+        loss = 32.44 + 20 * math.log10(max(d_km, 0.001)) + 20 * math.log10(self.tx.freq_ghz * 1000)
+        # Mesma conversão entre perda e campo usada pelo P.1812 (GHz e kW).
+        field = 199.36 + 20 * math.log10(self.tx.freq_ghz) + 10 * math.log10(self.tx.tx_power_kw) - loss + ant_gain_db
+        return loss, field
+
     def compute_point_coverage( self, rx_coord_ij ):
 
         tx_coord_ij = self.env.coord_to_index(self.tx.tx_coord[0], self.tx.tx_coord[1])
@@ -1100,6 +1119,8 @@ class Coverage:
                                     Ptx=self.tx.tx_power_kw )
             path_loss = Lb
             field_intensity = ant_gain_db + Ep
+        else:
+            path_loss, field_intensity = self._short_path_coverage(rx_coord_ij, ant_gain_db)
         
         return path_loss, field_intensity
 
@@ -1181,19 +1202,10 @@ class Coverage:
                     else:
                         self.dist_nlos.append( distance_profile[-1] )
                         self.pl_nlos.append( Lb )
+                else:
+                    path_loss[y, x], field_intensity[y, x] = self._short_path_coverage((x, y), ant_gain_db)
 
                 #pbar.update(1)
-
-        min_path_loss = np.nanmin(path_loss[path_loss > 0])
-        max_field_intensity = np.nanmax(field_intensity)
-        # Fill the blank space in the vicinity of the tx with the maximum power
-        for x_p in range(-_GLB_ITU_LIMITS_NUM_POINTS, _GLB_ITU_LIMITS_NUM_POINTS+1, 1):
-            for y_p in range(-_GLB_ITU_LIMITS_NUM_POINTS, _GLB_ITU_LIMITS_NUM_POINTS+1, 1):
-
-                x = tx_coord_ij[0] + x_p
-                y = tx_coord_ij[1] + y_p
-                path_loss[y,x] = min_path_loss
-                field_intensity[y,x] = max_field_intensity
 
         self.path_loss_map = path_loss
         self.field_intensity_map = field_intensity

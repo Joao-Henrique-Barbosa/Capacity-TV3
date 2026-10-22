@@ -2,7 +2,7 @@
 
 Extração de mapas de propagação e simulações Monte Carlo de capacidade **MIMO 2×2** e **MIMO-LDM** para TV 3.0. O fluxo prepara terreno, distância, visibilidade (LoS), probabilidade de LoS e perda de percurso com SuriaCov/P.1812; os dois modelos de capacidade reutilizam esses mapas.
 
-A campanha regional inclui **48 torres**, sendo 12 no Norte, Nordeste, Centro-Oeste e Sudeste, em **195, 234, 273, 354 e 600 MHz**. O Sul não faz parte desta seleção. As coordenadas e alturas estão no [cadastro regional](configs/towers_12_por_regiao.yaml).
+O repositório inclui exemplos de extração e dos dois modelos para uma torre em 273 MHz. Campanhas particulares e mapas gerados ficam apenas na instalação local.
 
 ## Requisitos
 
@@ -68,34 +68,11 @@ Os exemplos usam poucas realizações para conhecer o fluxo; não constituem uma
 
 O `--dry-run` da simulação valida os parâmetros e a integridade dos mapas; depende da extração concluída. Sem `--config`, os três scripts usam os respectivos `exemplo_guia.yaml`.
 
-## 4. Executar as 12 torres por região
+## 4. Configurar seus experimentos
 
-Os lotes prontos são `NORTE`, `NORDESTE`, `CENTRO_OESTE`, `SUDESTE` e `todas`. Cada lote regional contém 12 torres × 5 frequências = 60 ambientes. `todas` contém 240 ambientes.
+Use `configs/towers.example.yaml` como modelo do cadastro e os três `exemplo_guia.yaml` como modelos de extração e simulação. Copie-os para YAMLs locais, ajuste os caminhos relativos, torres e parâmetros e execute os scripts com `--config`.
 
-Exemplo para o Norte:
-
-```powershell
-& $pythonTV3 scripts/prepare_environments.py --config configs/extraction/torres_12_por_regiao/NORTE.yaml --dry-run
-& $pythonTV3 scripts/prepare_environments.py --config configs/extraction/torres_12_por_regiao/NORTE.yaml
-
-& $pythonTV3 scripts/run_mimo_capacity.py --config configs/simulations/mimo_capacity/torres_12_por_regiao/NORTE.yaml --dry-run
-& $pythonTV3 scripts/run_mimo_capacity.py --config configs/simulations/mimo_capacity/torres_12_por_regiao/NORTE.yaml
-
-& $pythonTV3 scripts/run_mimo_ldm_capacity.py --config configs/simulations/mimo_ldm_capacity/torres_12_por_regiao/NORTE.yaml --dry-run
-& $pythonTV3 scripts/run_mimo_ldm_capacity.py --config configs/simulations/mimo_ldm_capacity/torres_12_por_regiao/NORTE.yaml
-```
-
-Para outra região ou todas juntas, substitua `NORTE.yaml` pelo mesmo nome de lote nos seis comandos. A extração gera a seleção `datasets/<lote>.yaml` usada pelos modelos. **Os IDs dos datasets são produzidos na sua instalação**, junto dos mapas.
-
-Se extrair `todas` e depois quiser simular apenas uma região, execute também a preparação daquela região com `reuse_existing: true`: ela reutiliza os mapas, confere a integridade e publica a seleção regional. O mesmo vale para reunir os quatro lotes em `todas`.
-
-| Campanha | MIMO | MIMO-LDM |
-|---|---:|---:|
-| Cenários por ambiente | 8 | 60 |
-| Tarefas por região | 480 | 3.600 |
-| Tarefas nas quatro regiões | 1.920 | 14.400 |
-
-Consulte os [parâmetros das campanhas](configs/simulations/README.md) antes da execução completa. `max_workers: null` usa o limite automático; reduza esse valor conforme a RAM disponível. A extração é sequencial e as simulações paralelizam cenários de um ambiente. Execute um lote por vez.
+A seleção indicada em `datasets` deve ser a mesma gravada pela extração em `selection_output`. Mantenha os parâmetros das torres iguais nas duas etapas. Configurações particulares e seleções geradas são ignoradas pelo Git.
 
 ## Resultados, repetição e retomada
 
@@ -107,6 +84,12 @@ Consulte os [parâmetros das campanhas](configs/simulations/README.md) antes da 
 
 A extração reutiliza mapas completos com `reuse_existing: true`. Uma simulação reexecutada **substitui os cenários selecionados**, sem retomada automática de Monte Carlo. Mude `campaign` para preservar um experimento anterior. Não execute duas instâncias sobre a mesma campanha.
 
+### Tratamento próximo ao transmissor
+
+Perfis com até quatro pontos usam perda em espaço livre calculada pela distância de cada pixel. No pixel usado como transmissor, usa-se a menor distância positiva do raster. Os demais perfis mantêm P.1812; não há preenchimento uniforme de um quadrado central.
+
+Para recalcular mapas produzidos com uma versão anterior do extrator, configure `reuse_existing: false` no YAML de extração e execute novamente a preparação. Depois use a seleção de IDs atualizada na simulação. Resultados de capacidade existentes não são atualizados automaticamente.
+
 ## Estrutura e documentação
 
 | Caminho | Conteúdo |
@@ -115,11 +98,9 @@ A extração reutiliza mapas completos com `reuse_existing: true`. Uma simulaç�
 | `src/tv3_simulations/` | Modelos, propagação, validação e gráficos |
 | `configs/` | Exemplos portáveis, cadastros e campanhas |
 | `data/geography/` | Bases compactadas, manifesto de integridade e procedência |
-| `data/torres_12_por_regiao_selecao.json` | Registro da seleção regional |
 | `data/environments/`, `results/`, `.cache/` | Gerados localmente; fora do Git |
 
 - [Guia completo dos campos YAML e erros comuns](GUIA_CONFIGURACAO_E_EXECUCAO.md).
-- [Critérios e mapa das 48 torres](configs/extraction/torres_12_por_regiao/README.md).
-- [Configurações dos dois modelos por região](configs/simulations/README.md).
+- [Configurações de demonstração dos dois modelos](configs/simulations/README.md).
 
-Os `default.yaml`, cadastros e lotes de sete torres por UF são referências de campanhas anteriores. Não são o padrão dos scripts atuais. Para apenas simular mapas já preparados, `pip install -e .` basta; copie também o catálogo, os mapas e a seleção de IDs compatível. O [guia](GUIA_CONFIGURACAO_E_EXECUCAO.md#11-saídas-e-importação) descreve a importação de dados antigos.
+Para apenas simular mapas já preparados, `pip install -e .` basta; copie também o catálogo, os mapas e a seleção de IDs compatível. O [guia](GUIA_CONFIGURACAO_E_EXECUCAO.md#11-saídas-e-importação) descreve a importação de dados antigos.

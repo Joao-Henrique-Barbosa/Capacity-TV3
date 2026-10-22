@@ -2,7 +2,7 @@
 model: mimo_capacity
 campaign: exemplo_guia
 paths: ../../paths.local.yaml
-tower_catalog: ../../towers_12_por_regiao.yaml
+tower_catalog: ../../towers.example.yaml
 datasets: ../../extraction/datasets/exemplo_guia.yaml
 towers: [AM_57dbac0ec1a75]
 frequencies_ghz: [0.273]

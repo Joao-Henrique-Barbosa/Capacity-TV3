@@ -55,8 +55,8 @@ class MIMOChannelModel:
 
     def _compute_P_matrix(self, x_linear):
         """Implementa a Equação 5 da matriz P(x) do artigo."""
-        term1 = np.sqrt(x_linear / 2*(x_linear + 1))
-        term2 = np.sqrt(1 / 2*(x_linear + 1))
+        term1 = np.sqrt(x_linear / (2*(x_linear + 1)))
+        term2 = np.sqrt(1 / (2*(x_linear + 1)))
 
         if isinstance(x_linear, np.ndarray):
             N = len(x_linear)

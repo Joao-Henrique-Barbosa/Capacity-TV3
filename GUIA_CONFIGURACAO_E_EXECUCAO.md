@@ -1,6 +1,6 @@
 # Guia de configuração e execução
 
-Este documento descreve os campos efetivamente usados pelo código deste projeto. A campanha atual contém **48 estações: 12 no Norte, Nordeste, Centro-Oeste e Sudeste**. O Sul está excluído. As alturas cadastradas são preservadas; o limiar da seleção é 70 m, com a exceção de 55 m no Nordeste.
+Este documento descreve os campos usados pelo código e os exemplos de demonstração incluídos no repositório. Cadastros e configurações de campanhas particulares devem ser criados localmente.
 
 Para começar, siga a seção [Primeira execução](#1-primeira-execução). Para consultar um parâmetro, procure seu nome neste arquivo com `Ctrl+F`.
 
@@ -14,7 +14,7 @@ Para começar, siga a seção [Primeira execução](#1-primeira-execução). Par
 6. [Opções internas do SuriaCov](#6-opções-internas-do-suriacov)
 7. [Seleção de datasets](#7-seleção-de-datasets)
 8. [Configuração das simulações](#8-configuração-das-simulações)
-9. [Campanha completa ou por região](#9-campanha-completa-ou-por-região)
+9. [Criar uma campanha local](#9-criar-uma-campanha-local)
 10. [Paralelismo, repetição e custo](#10-paralelismo-repetição-e-custo)
 11. [Saídas e importação](#11-saídas-e-importação)
 12. [Erros comuns](#12-erros-comuns)
@@ -84,14 +84,14 @@ Os resultados desses exemplos ficam em `results/mimo_capacity/exemplo_guia/` e `
 | Preparação | Leitura dos YAMLs, seleção de torres, frequências, tamanho mínimo da grade e overrides | Não abre e valida todas as bases geográficas, não verifica a presença de mar/NoData, não calcula propagação e não gera datasets |
 | Simulação | Configuração, referências de datasets, correspondência dos parâmetros, integridade dos mapas e contagem de tarefas | Não executa Monte Carlo nem grava resultados |
 
-O `dry-run` da simulação pode levar algum tempo porque lê e confere os arquivos. A verificação geográfica das 48 estações foi feita na seleção; ela não é uma função automática do `dry-run` de extração.
+O `dry-run` da simulação pode levar algum tempo porque lê e confere os arquivos.
 
 ## 2. Como os arquivos se conectam
 
 ```mermaid
 flowchart TD
     P[paths.local.yaml: diretórios e bases] --> E[Lote de extração]
-    T[towers_12_por_regiao.yaml: parâmetros das torres] --> E
+    T[towers.example.yaml: parâmetros das torres] --> E
     S[suriacov.yaml: opções do extrator] --> E
     E --> M[Mapas e catálogo em data/environments]
     E --> D[datasets/lote.yaml: IDs dos mapas gerados]
@@ -128,7 +128,7 @@ As três pastas-raiz precisam ser distintas e não podem estar contidas umas nas
 
 ## 4. Cadastro das torres
 
-Arquivo atual: [configs/towers_12_por_regiao.yaml](configs/towers_12_por_regiao.yaml). O topo é `towers`, seguido de um bloco por identificador.
+Arquivo atual: [configs/towers.example.yaml](configs/towers.example.yaml). O topo é `towers`, seguido de um bloco por identificador.
 
 ```yaml
 towers:
@@ -170,7 +170,7 @@ O campo `num_samples` altera a resolução, não a área: o código atual fixa a
 
 ## 5. Lotes de extração
 
-Campanha atual: [configs/extraction/torres_12_por_regiao/todas.yaml](configs/extraction/torres_12_por_regiao/todas.yaml). Exemplo pequeno: [configs/extraction/exemplo_guia.yaml](configs/extraction/exemplo_guia.yaml).
+Exemplo de extração: [configs/extraction/exemplo_guia.yaml](configs/extraction/exemplo_guia.yaml).
 
 | Campo | Obrigatoriedade / padrão | Função |
 |---|---|---|
@@ -183,7 +183,7 @@ Campanha atual: [configs/extraction/torres_12_por_regiao/todas.yaml](configs/ext
 | `selection_output` | Obrigatório | YAML que receberá os IDs dos datasets, publicado ao concluir o lote |
 | `extraction_overrides` | Opcional; padrão `{}` | Substituições temporárias dos parâmetros das torres, descritas abaixo |
 
-O lote calcula todas as combinações de `towers × frequencies_ghz`. Para 48 estações e cinco frequências são 240 ambientes; para 12 estações são 60.
+O lote calcula todas as combinações de `towers × frequencies_ghz`. O exemplo inclui uma estação e uma frequência, portanto prepara um ambiente.
 
 Somente quatro overrides são aceitos:
 
@@ -247,11 +247,11 @@ datasets:
 
 Para cada par torre/frequência solicitado deve existir **exatamente uma referência**. A seleção pode conter outros pares não solicitados. Não invente IDs nem altere os mapas manualmente: a validação compara parâmetros e checksums.
 
-Depois de extrair `torres_12_por_regiao/todas.yaml`, use `torres_12_por_regiao/datasets/todas.yaml`. Depois de extrair somente `NORTE.yaml`, use `datasets/NORTE.yaml`. O segundo arquivo não é um lote de extração; é a lista de dados produzidos pelo primeiro.
+Depois de extrair `configs/extraction/exemplo_guia.yaml`, use `configs/extraction/datasets/exemplo_guia.yaml`, gerado localmente.
 
 ## 8. Configuração das simulações
 
-Cada modelo tem seu próprio YAML. Os exemplos prontos desta documentação usam a seleção atual. Os arquivos antigos `default.yaml` ainda apontam para a seleção anterior. Os scripts sem `--config` usam `exemplo_guia.yaml`; para campanhas regionais, use `--config` explicitamente.
+Cada modelo tem seu próprio YAML de demonstração. Os scripts sem `--config` usam `exemplo_guia.yaml`; para experimentos próprios, use `--config` explicitamente.
 
 ### 8.1 Campos compartilhados
 
@@ -305,40 +305,13 @@ Exemplos: ε = 0,05 corresponde a NMSE = 0,0025; ε = 0,1 corresponde a NMSE = 0
 
 O número de combinações canal/erro por ponto é `num_realizations × num_error_realizations`: 50 × 50 = 2.500. Não existe um campo YAML adicional `num_channel_realizations` no runner; use `num_realizations`.
 
-## 9. Campanha completa ou por região
+## 9. Criar uma campanha local
 
-### Extrair as 48 estações
+Copie o cadastro `configs/towers.example.yaml` e os exemplos de extração e simulação para seus próprios YAMLs. Edite o cadastro, selecione as torres e frequências e ajuste todos os caminhos relativos a cada arquivo.
 
-```powershell
-& $pythonTV3 scripts/prepare_environments.py --config configs/extraction/torres_12_por_regiao/todas.yaml --dry-run
-& $pythonTV3 scripts/prepare_environments.py --config configs/extraction/torres_12_por_regiao/todas.yaml
-```
+Na extração, defina `selection_output`; nas simulações, aponte `datasets` para essa mesma seleção. Use o mesmo cadastro nas três etapas e um nome `campaign` próprio para separar resultados. Execute cada script com `--config caminho/do/seu.yaml`.
 
-### Extrair somente o Norte
-
-```powershell
-& $pythonTV3 scripts/prepare_environments.py --config configs/extraction/torres_12_por_regiao/NORTE.yaml --dry-run
-& $pythonTV3 scripts/prepare_environments.py --config configs/extraction/torres_12_por_regiao/NORTE.yaml
-```
-
-Os outros lotes são `NORDESTE.yaml`, `CENTRO_OESTE.yaml` e `SUDESTE.yaml`. O arquivo `SUL.yaml` não faz parte da campanha.
-
-### Simular uma região ou todas
-
-Cada modelo já possui os cinco lotes em `configs/simulations/<modelo>/torres_12_por_regiao/`. Após concluir a extração do Norte:
-
-```powershell
-& $pythonTV3 scripts/run_mimo_capacity.py --config configs/simulations/mimo_capacity/torres_12_por_regiao/NORTE.yaml --dry-run
-& $pythonTV3 scripts/run_mimo_capacity.py --config configs/simulations/mimo_capacity/torres_12_por_regiao/NORTE.yaml
-& $pythonTV3 scripts/run_mimo_ldm_capacity.py --config configs/simulations/mimo_ldm_capacity/torres_12_por_regiao/NORTE.yaml --dry-run
-& $pythonTV3 scripts/run_mimo_ldm_capacity.py --config configs/simulations/mimo_ldm_capacity/torres_12_por_regiao/NORTE.yaml
-```
-
-Troque `NORTE.yaml` pelo nome do lote desejado nos comandos de extração e simulação. Cada configuração consome `configs/extraction/torres_12_por_regiao/datasets/<lote>.yaml`, gerado localmente. Não reutilize IDs de outra instalação sem copiar também seus mapas e catálogo.
-
-Para personalizar, copie um lote na mesma pasta e altere `campaign`, potências, realizações ou processos. Se mudar torres ou frequências, confira se a seleção de datasets cobre todos os pares pedidos. Consulte os [parâmetros dos lotes](configs/simulations/README.md).
-
-Se você extraiu os quatro lotes separados, não suponha que `datasets/todas.yaml` exista. Execute o lote `todas.yaml` com `reuse_existing: true`: os mapas compatíveis serão reutilizados e a seleção conjunta será publicada ao concluir.
+Os YAMLs particulares em `configs/` são ignorados pelo Git. O repositório publica somente os exemplos necessários à primeira execução e a configuração interna do extrator.
 
 ## 10. Paralelismo, repetição e custo
 
@@ -351,7 +324,7 @@ Com `max_workers: null`, o programa usa até CPUs − 1, com mínimo de um, limi
 | MIMO | torres × frequências × potências |
 | MIMO-LDM | torres × frequências × potências × valores de IR × valores de ε |
 
-Nos lotes regionais atuais, MIMO com 48 torres, cinco frequências e oito potências gera 1.920 tarefas. LDM com 48 torres, cinco frequências, cinco potências, quatro IRs e três valores de ε gera 14.400 tarefas. Cada tarefa percorre a grade e faz as realizações configuradas.
+Cada exemplo publicado gera uma tarefa. Em campanhas próprias, o número de tarefas cresce com as combinações de torres, frequências, potências e, no LDM, razões de injeção e valores de ε. Cada tarefa percorre a grade e faz as realizações configuradas.
 
 Para comparar execuções, use um inteiro em `random_seed`. Quando usar `null`, recupere o `base_seed` gravado nos metadados para repetir. O executor deriva sementes por cenário e frequência; o ID da torre não entra nessa derivação, portanto não presuma sementes diferentes por torre.
 
@@ -418,7 +391,7 @@ O importador copia e valida os mapas sem alterar a origem. Registra um relatóri
 
 ### O que ainda não é configurável por YAML
 
-Não há opções para seleção automática de estações, distância mínima do litoral, exclusão automática de mar, máscara de NoData, raio em quilômetros, dimensão MIMO diferente de 2×2 ou paralelismo da extração. Esses comportamentos não aparecem ao adicionar chaves com nomes semelhantes. O afastamento do litoral e a ausência de lacunas são propriedades verificadas da seleção atual, descritas no [relatório da campanha](configs/extraction/torres_12_por_regiao/README.md).
+Não há opções para seleção automática de estações, distância mínima do litoral, exclusão automática de mar, máscara de NoData, raio em quilômetros, dimensão MIMO diferente de 2×2 ou paralelismo da extração. Esses comportamentos não aparecem ao adicionar chaves com nomes semelhantes. Verifique a cobertura das bases geográficas para as coordenadas escolhidas antes de executar seus experimentos.md).
 
 ### Referência no código
 

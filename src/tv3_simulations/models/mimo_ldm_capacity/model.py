@@ -89,8 +89,8 @@ class MIMOChannelModel:
 
     def _compute_P_matrix(self, x_linear):
         """Implementa a matriz de ponderacao de polarizacao P(x)."""
-        term1 = np.sqrt(x_linear / 2*(x_linear + 1))
-        term2 = np.sqrt(1 / 2*(x_linear + 1))
+        term1 = np.sqrt(x_linear / (2*(x_linear + 1)))
+        term2 = np.sqrt(1 / (2*(x_linear + 1)))
 
         if isinstance(x_linear, np.ndarray):
             N = len(x_linear)
@@ -131,8 +131,8 @@ class MIMOChannelModel:
 
     def _compute_P_matrix_batch(self, x_linear):
         """Implementa P(x) para x com dimensoes (enlaces, realizacoes)."""
-        term1 = np.sqrt(x_linear / (x_linear + 1))
-        term2 = np.sqrt(1 / (x_linear + 1))
+        term1 = np.sqrt(x_linear / (2*(x_linear + 1)))
+        term2 = np.sqrt(1 / (2*(x_linear + 1)))
 
         P = np.zeros(x_linear.shape + (2, 2), dtype=np.float64)
         P[..., 0, 0] = term1

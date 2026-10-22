@@ -31,3 +31,19 @@ docs/tcc_chapter_1/
 .env
 .env.*
 !.env.example
+
+# Somente exemplos e configuracao do extrator sao publicados.
+configs/**/*.yaml
+configs/**/*.yml
+!configs/paths.example.yaml
+!configs/towers.example.yaml
+!configs/extraction/exemplo_guia.yaml
+!configs/extraction/suriacov.yaml
+!configs/simulations/mimo_capacity/exemplo_guia.yaml
+!configs/simulations/mimo_ldm_capacity/exemplo_guia.yaml
+configs/extraction/torres_*/
+configs/simulations/*/torres_*/
+data/mapa_torres_*.png
+data/torres_*_selecao.json
+data/torres_*.csv
+docs/tcc_chapter_*/
